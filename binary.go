@@ -145,6 +145,22 @@ func (r *BinaryReader) Number(v interface{}) (failed bool) {
 	return false
 }
 
+// All reads all remaining bytes.
+func (r *BinaryReader) All() (data []byte, failed bool) {
+	if r.err != nil {
+		return nil, true
+	}
+
+	data, r.err = io.ReadAll(r.r)
+	r.n += int64(len(data))
+
+	if r.err != nil {
+		return nil, true
+	}
+
+	return data, false
+}
+
 // BinaryWriter wraps an io.Writer to provide primitive methods for writing
 // binary data.
 //
