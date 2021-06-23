@@ -70,6 +70,17 @@ func (t *TextReader) MustNext() (r rune) {
 	return r
 }
 
+// Peek returns the next rune without advancing the cursor. Returns r < 0 if an
+// error occurred.
+func (t *TextReader) Peek() (r rune) {
+	r, _, t.err = t.r.ReadRune()
+	if t.err != nil {
+		return -1
+	}
+	t.r.UnreadRune()
+	return r
+}
+
 // Is compares s to the next characters in the reader. If they are equal, then
 // the cursor is advanced, and true is returned. Otherwise, the cursor is not
 // advanced, and false is returned.
